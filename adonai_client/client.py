@@ -72,7 +72,6 @@ class AdonaiClient:
 
         return response.json()["access_token"]
 
-    @property
     def query(self) -> schema.query_type:
         """        
         :return: operation based on query
@@ -80,7 +79,6 @@ class AdonaiClient:
         """
         return Operation(schema.query_type)
 
-    @property
     def mutation(self) -> schema.query_type:
         """
         :return: operation based on mutation
@@ -120,7 +118,7 @@ class AdonaiClient:
         query = None
 
         if query_type == QueryType.query:
-            query = self.query
+            query = self.query()
 
         else:
             raise AdonaiClientException("Unexpected type", str(query_type))
