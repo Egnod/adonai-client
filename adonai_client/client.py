@@ -94,15 +94,20 @@ class AdonaiClient:
         :type operation: Selection
         :return: result of query
         """
-        return self._gql_endpoint(operation)
+        response = self._gql_endpoint(operation)
+
+        if "errors" in response:
+            raise AdonaiClientException("Error on query execute", response["errors"])
+
+        return response
 
     def get_query(
         self, query_type: QueryType, query_name: str, exclude_fields: tuple = ()
     ) -> Operation:
         """
-        :param query_type: query or mutation
+        :param query_type: query
         :type query_type: QueryType
-        :param query_name: query or mutation name
+        :param query_name: query name
         :type query_name: str
         :param exclude_fields: excluded fields from final query, defaults to ()
         :type exclude_fields: tuple, optional
@@ -117,11 +122,8 @@ class AdonaiClient:
         if query_type == QueryType.query:
             query = self.query
 
-        elif query_type == QueryType.mutation:
-            query = self.mutation
-
         else:
-            raise AdonaiClientException("Unexpected query type", str(query_type))
+            raise AdonaiClientException("Unexpected type", str(query_type))
 
         query_selection = getattr(query, query_name, None)
 
