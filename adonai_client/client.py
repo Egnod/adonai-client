@@ -97,7 +97,7 @@ class AdonaiClient:
         return self._gql_endpoint(operation)
 
     def get_query(
-        self, query_type: QueryType, query_name: str
+        self, query_type: QueryType, query_name: str, exclude_fields: tuple = ()
     ) -> Operation:
         """
         :param query_type: query or mutation
@@ -131,5 +131,8 @@ class AdonaiClient:
             )
 
         query_selection = query_selection()
+
+        for field in exclude_fields:
+            query_selection.__fields__(**{field: False})
 
         return query
