@@ -97,4 +97,7 @@ class AdonaiClient:
         if "errors" in response:
             raise AdonaiClientException("Error on query execute", response["errors"])
 
-        return response
+        return response["data"]
+
+    def fields(self, query_selection: Selection, **fields):
+        return query_selection.__fields__(**fields)
