@@ -2,8 +2,7 @@ name: Publish adonai-client
 
 on:
   release:
-    actions:
-       - published
+    types: [published]
 
 jobs:
   deploy:
