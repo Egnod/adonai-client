@@ -89,7 +89,8 @@ class AdonaiClient:
         """
         return Operation(schema.mutation_type)
 
-    def execute(self, operation: Selection, attempt: int = 0):
+    
+    def execute(self, operation: Selection, attempt: int = 0, interpret: bool = True):
         """
         :param operation: queyr or mutation operation
         :type operation: Selection
@@ -104,6 +105,9 @@ class AdonaiClient:
             
             raise AdonaiClientException("Error on query execute", response["errors"])
         
+        if interpret:
+            return operation + response
+
         return response["data"]
 
     def fields(self, query_selection: Selection, **fields):
