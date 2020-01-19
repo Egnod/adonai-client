@@ -24,6 +24,10 @@ class PermissionType(sgqlc.types.Enum):
 
 String = sgqlc.types.String
 
+class UUID(sgqlc.types.Scalar):
+    __schema__ = schema
+
+
 
 ########################################################################
 # Input Objects
@@ -265,9 +269,19 @@ class Query(sgqlc.types.Type):
         ('id', sgqlc.types.Arg(sgqlc.types.non_null(ID), graphql_name='id', default=None)),
 ))
     )
+    current_user = sgqlc.types.Field('User', graphql_name='currentUser')
     users = sgqlc.types.Field(sgqlc.types.list_of('User'), graphql_name='users')
     get_user = sgqlc.types.Field('User', graphql_name='getUser', args=sgqlc.types.ArgDict((
         ('id', sgqlc.types.Arg(sgqlc.types.non_null(ID), graphql_name='id', default=None)),
+))
+    )
+    authenticate_user = sgqlc.types.Field('User', graphql_name='authenticateUser', args=sgqlc.types.ArgDict((
+        ('login', sgqlc.types.Arg(sgqlc.types.non_null(String), graphql_name='login', default=None)),
+        ('password', sgqlc.types.Arg(sgqlc.types.non_null(String), graphql_name='password', default=None)),
+))
+    )
+    identity_user = sgqlc.types.Field('User', graphql_name='identityUser', args=sgqlc.types.ArgDict((
+        ('uuid', sgqlc.types.Arg(sgqlc.types.non_null(UUID), graphql_name='uuid', default=None)),
 ))
     )
     domains = sgqlc.types.Field(sgqlc.types.list_of(Domain), graphql_name='domains')
