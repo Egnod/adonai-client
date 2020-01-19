@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "adonai-client"
-version = "0.1.2"
+version = "0.1.3"
 description = "Client for adonai server"
 authors = ["Aleksander Lavrov <egnod@ya.ru>"]
 license = "MIT"
