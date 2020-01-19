@@ -1,8 +1,9 @@
 name: Publish adonai-client
 
 on:
-  release:
-    types: [published, created]
+  push:
+    branches:
+        - master
 
 jobs:
   deploy:
