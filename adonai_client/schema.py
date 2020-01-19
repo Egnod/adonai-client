@@ -133,7 +133,7 @@ class Mutation(sgqlc.types.Type):
     update_project = sgqlc.types.Field('UpdateProject', graphql_name='updateProject', args=sgqlc.types.ArgDict((
         ('description', sgqlc.types.Arg(String, graphql_name='description', default=None)),
         ('id', sgqlc.types.Arg(sgqlc.types.non_null(ID), graphql_name='id', default=None)),
-        ('name', sgqlc.types.Arg(sgqlc.types.non_null(String), graphql_name='name', default=None)),
+        ('name', sgqlc.types.Arg(String, graphql_name='name', default=None)),
 ))
     )
     toggle_project = sgqlc.types.Field('ToggleProject', graphql_name='toggleProject', args=sgqlc.types.ArgDict((
