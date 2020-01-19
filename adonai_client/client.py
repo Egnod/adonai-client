@@ -53,7 +53,7 @@ class AdonaiClient:
             base_headers={"Authorization": f"{token_prefix}{self._token}"},
         )
 
-    def _get_auth_token(self) -> str:
+    def _get_auth_token(self) -> None:
         """
         :raises AdonaiClientException: raises on server response status not OK (200)
         :return: JWT token by user auth data
@@ -72,6 +72,9 @@ class AdonaiClient:
 
         return response.json()["access_token"]
 
+    def _refresh_token(self) -> None:
+        self._token = self._get_auth_token()
+
     def query(self) -> schema.query_type:
         """        
         :return: operation based on query
@@ -86,7 +89,7 @@ class AdonaiClient:
         """
         return Operation(schema.mutation_type)
 
-    def execute(self, operation: Selection):
+    def execute(self, operation: Selection, attempt: int = 0):
         """
         :param operation: queyr or mutation operation
         :type operation: Selection
@@ -95,8 +98,12 @@ class AdonaiClient:
         response = self._gql_endpoint(operation)
 
         if "errors" in response:
+            if "token" in response["errors"][0]["message"] and attempt == 0:
+                self._refresh_token()
+                return self.execute(operation, attempt=attempt + 1)
+            
             raise AdonaiClientException("Error on query execute", response["errors"])
-
+        
         return response["data"]
 
     def fields(self, query_selection: Selection, **fields):
